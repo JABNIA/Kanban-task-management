@@ -21,7 +21,7 @@ function TaskDetails({setInModal, setDropDownOpen}) {
     
     if(edit === true){
     return (
-        <ModalContainer>
+        <ModalContainer onMouseEnter={()=> setInModal(true)} onMouseLeave={()=> setInModal(false)}>
             <h2>Edit Task</h2>
             <div className='input-wrapper'>
                 <label htmlFor="title">Title</label>
@@ -57,20 +57,19 @@ function TaskDetails({setInModal, setDropDownOpen}) {
     return (
         <ModalContainer onMouseEnter={()=> setInModal(true)} onMouseLeave={()=> setInModal(false)}>
             <div className='task-name'>
-                <p>
-                    <span>
+                <p className='task-title'>
                         {filteredTask.title}
-                    </span>
                 </p>
                 <span onClick={() => setEditMenu(curr => !curr)} className='menu-button'>
-                        <svg width="5" height="20" xmlns="http://www.w3.org/2000/svg"><g fill="#828FA3" fill-rule="evenodd"><circle cx="2.308" cy="2.308" r="2.308"/><circle cx="2.308" cy="10" r="2.308"/><circle cx="2.308" cy="17.692" r="2.308"/></g></svg>
+                    <svg width="5" height="20" xmlns="http://www.w3.org/2000/svg"><g fill="#828FA3" fill-rule="evenodd"><circle cx="2.308" cy="2.308" r="2.308"/><circle cx="2.308" cy="10" r="2.308"/><circle cx="2.308" cy="17.692" r="2.308"/></g></svg>
+                    {editMenu && 
+                    <div className='edit-menu'>
+                        <p onClick={() => setEdit(true)}>Edit Task</p>
+                        <p style={{color: "#EA5555"}}>Delete Task</p>
+                    </div>
+                    }   
                 </span>
-                {editMenu && 
-                <div className='edit-menu'>
-                    <p onClick={() => setEdit(true)}>Edit Task</p>
-                    <p style={{color: "#EA5555"}}>Delete Task</p>
-                </div>
-                }   
+                
             </div>
           
 
@@ -114,19 +113,16 @@ export default TaskDetails
 
 
 const ModalContainer = styled.div`
-    position: absolute;
-    top: calc((100% - 523px)/2);
-    left: calc((100% - 480px)/2);
     width: 480px;
     height: auto;
-    padding: 32px;
+    padding: 14px 32px 32px;
     background-color: #FFFFFF;
     border-radius: 6px;   
 
     .task-name{
-        width: 387px;
+        position: relative;
+        width: 416px;
         height: 69px;
-        display: inline-block;
         font-family: Plus Jakarta Sans;
         font-size: 18px;
         font-weight: 700;
@@ -136,8 +132,7 @@ const ModalContainer = styled.div`
 
     .edit-menu{
         position: absolute;
-        top: 98px;
-        left: 353px;
+        left: -96px;
         border-radius: 8px;
         width: 192px;
         height: 94px;
@@ -180,12 +175,12 @@ const ModalContainer = styled.div`
         text-align: left;
     }
 
-    .completed{
+    .completed {
         text-decoration: line-through;
         color:#00011250;
     }
     
-    .status{
+    .status {
         width: 416px;
         height: 40px;
         background-color: transparent;
@@ -204,11 +199,13 @@ const ModalContainer = styled.div`
         background-position: 391px 18.5px;  
     }
 
-    .menu-button{
-        display: inline-block;
+    .menu-button { 
         position: absolute;
-        top: 56px;
-        right: 32.38px;
+        top: 50%;
+        right: 0.38px;
+        transform: translate(0%, -50%);
+        width: 5px;
+        display: block;
     }
 
     .input-wrapper {
@@ -244,7 +241,7 @@ const ModalContainer = styled.div`
         gap: 16px;
     }
 
-    .save-changes{
+    .save-changes {
         width: 100%;
         height: 40px;
         background-color: #635FC7;
@@ -256,6 +253,12 @@ const ModalContainer = styled.div`
         text-align: center;
         border: none;
         border-radius: 24px;
+    }
+
+    .task-title{
+        position: absolute;
+        top: calc(50% - 22px);
+        transform: translate(0%, -50%);
     }
 
     input {

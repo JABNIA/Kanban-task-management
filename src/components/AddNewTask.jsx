@@ -30,7 +30,7 @@ function AddNewTask({setInModal, setDropDownOpen}) {
             <label htmlFor="">Status</label>
             <select name="status" onFocus={() => setDropDownOpen(true)} onBlur={() => setDropDownOpen(false)}>
                 {context.boards[context.activeBoard]
-            .columns.map(column => <option className='option'>{column.name}</option>)}
+                .columns.map(column => <option className='option'>{column.name}</option>)}
             </select>
         </div>
         <button className='create-task'>Create Task</button>
@@ -41,10 +41,7 @@ function AddNewTask({setInModal, setDropDownOpen}) {
 export default AddNewTask
 
 
-const ModalWrapper = styled.div`
-    position: absolute;
-    top: calc((100% - 657px)/2);
-    left: calc((100% - 480px)/2);
+export const ModalWrapper = styled.div`
     width: 480px;
     padding: 32px;
     background-color: #FFFFFF;

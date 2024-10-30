@@ -18,7 +18,10 @@ function App() {
   const [modal, setModal] = useState(false)
   const [details, setDetails] = useState(false);
   const [selectedTask, setSelectedTask] = useState("");
-  const [addNewTask, setAddNewTask] = useState(false)
+  const [addNewTask, setAddNewTask] = useState(false);
+  const [newBoardMenu, setNewBoardMenu] = useState(true);
+  
+  
   
   const appData = {
     boards: boards,
@@ -29,6 +32,7 @@ function App() {
     details: details,
     selectedTask: selectedTask,
     addNewTask: addNewTask,
+    newBoardMenu: newBoardMenu,
     setBoards: setBoards,
     setActiveBoard: setActiveBoard,
     setSideMenu: setSideMenu,
@@ -37,6 +41,7 @@ function App() {
     setDetails: setDetails,
     setSelectedTask: setSelectedTask,
     setAddNewTask: setAddNewTask,
+    setNewBoardMenu: setNewBoardMenu,
   }
 
   return (

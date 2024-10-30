@@ -28,6 +28,12 @@ function Slidebar() {
                     )
                 }
                 )}
+                <p className='board-name' style={{color: "#635fc7"}} onClick={() => {
+                    context.setModal(true);
+                    context.setNewBoardMenu(true);
+                    context.setDetails(false);
+                    context.setAddNewTask(false);
+                }}>+ Create New Board</p>
             </div>
         <LightModeSwich darkMode={context.darkMode}>
             <img src="./assets/icon-light-theme.svg" alt="Light theme" />
