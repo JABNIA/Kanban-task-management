@@ -43,8 +43,9 @@ export default AddNewTask
 
 export const ModalWrapper = styled.div`
     width: 480px;
-    padding: 32px;
-    background-color: #FFFFFF;
+    padding: 14px 32px 32px;
+    background-color: ${props => props.darkMode ?"#2B2C37" : "#FFFFFF" };
+    color: ${props => props.darkMode ? "#FFFFFF" : "#000000"};
     border-radius: 6px;
 
     .input-wrapper {
@@ -64,8 +65,8 @@ export const ModalWrapper = styled.div`
         width: 100%;
         height: 40px;
         margin-bottom: 24px;
-        background-color: #635FC71A;
-        color: #635FC7;
+        background-color: ${props => props.darkMode ?"#FFFFFF" : "#635FC71A" };
+        color: ${props => props.darkMode ? "#635FC7" : "#000000"};
         font-family: Plus Jakarta Sans;
         font-size: 13px;
         font-weight: 700;
@@ -74,6 +75,23 @@ export const ModalWrapper = styled.div`
         border: none;
         border-radius: 24px;
     }
+
+    .edit-menu{
+        position: absolute;
+        left: -96px;
+        border-radius: 8px;
+        width: 192px;
+        height: 94px;
+        background-color: ${props => props.darkMode ?"#2B2C37" : "#FFFFFF" };
+        color: ${props => props.darkMode ? "#FFFFFF" : "#000000"};
+        font-family: Plus Jakarta Sans;
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 23px;
+        text-align: left;
+        padding: 16px;
+    }
+
 
     .subtask-input {
         display: flex;
@@ -94,12 +112,76 @@ export const ModalWrapper = styled.div`
         border-radius: 24px;
     }
 
+    .save-changes {
+        width: 100%;
+        height: 40px;
+        background-color: #635FC7;
+        color: #FFFFFF;
+        font-family: Plus Jakarta Sans;
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 23px;
+        text-align: center;
+        border: none;
+        border-radius: 24px;
+    }
+
+    .modal-title {
+        margin: 18px 0 24px;
+        font-family: Plus Jakarta Sans;
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 22.68px;
+        text-align: left;
+        color: #EA5555;
+    }
+
+    .warning{
+        font-family: Plus Jakarta Sans;
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 23px;
+        text-align: left;
+        color: #828FA3;
+    }
+
+    .btn-container{
+        width: 416px;
+        height: 40px;
+        display: flex;
+        justify-content: space-between;
+        margin: 24px 0 8px;
+    }
+    .btn{
+        width: 200px;
+        height: 40px;
+        border-radius: 20px;
+        border: none;
+        font-family: Plus Jakarta Sans;
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 23px;
+        text-align: center;
+    }
+
+    .delete-task{
+        background-color: #EA5555;
+        color: #FFFFFF;
+    }
+
+    .cancel-delete {
+        background-color: ${props => props.darkMode ? "#FFFFFF" : "#635FC71A"};
+        color: #635FC7;
+    }
+
     input{
         width: 416px;
         border: 1px solid #828FA340;
         height: 40px;
         display: inline-block;
         border-radius: 4px;
+        background-color: ${props => props.darkMode ?"#2B2C37" : "#FFFFFF" };
+        color: ${props => props.darkMode ? "#FFFFFF" : "#000000"};
     }
 
     img {
@@ -107,11 +189,15 @@ export const ModalWrapper = styled.div`
         width: 15px;
         height: 15px;
         display: inline-block;
+        background-color: ${props => props.darkMode ?"#2B2C37" : "#FFFFFF" };
+        color: ${props => props.darkMode ? "#FFFFFF" : "#000000"};
     }
     textarea {
         border: 1px solid #828FA340;
         resize: none;
         border-radius: 4px;
+        background-color: ${props => props.darkMode ?"#2B2C37" : "#FFFFFF" };
+        color: ${props => props.darkMode ? "#FFFFFF" : "#000000"};  
     }
 
     select {
@@ -119,6 +205,8 @@ export const ModalWrapper = styled.div`
         border: 1px solid #828FA340;
         border-radius: 4px;
         background-color: transparent;
+        background-color: ${props => props.darkMode ?"#2B2C37" : "#FFFFFF" };
+        color: ${props => props.darkMode ? "#FFFFFF" : "#000000"};
     }
 
 `

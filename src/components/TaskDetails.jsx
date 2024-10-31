@@ -3,12 +3,9 @@ import styled from 'styled-components'
 import { useKanbanContext } from '../Hooks/useContext'
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { createTheme } from '@mui/material';
-import { purple, pink } from '@mui/material/colors';
 
 
 function TaskDetails({setInModal, setDropDownOpen}) {
-
     const context = useKanbanContext()
     const [filteredTask] = context.boards.flatMap(board => 
             board.columns.flatMap(column => column.tasks
@@ -16,12 +13,13 @@ function TaskDetails({setInModal, setDropDownOpen}) {
             .filter(task => task.title === context.selectedTask)
     const subtasks = filteredTask.subtasks.filter(task => task.isCompleted).length
     const [edit, setEdit] = useState(false)
+    const [deleteTask, setDeleteTask] = useState(false)
     const [editMenu, setEditMenu] = useState(false)
  
     
     if(edit === true){
     return (
-        <ModalContainer onMouseEnter={()=> setInModal(true)} onMouseLeave={()=> setInModal(false)}>
+        <ModalContainer onMouseEnter={()=> setInModal(true)} onMouseLeave={()=> setInModal(false)} darkMode={context.darkMode}>
             <h2>Edit Task</h2>
             <div className='input-wrapper'>
                 <label htmlFor="title">Title</label>
@@ -52,10 +50,21 @@ function TaskDetails({setInModal, setDropDownOpen}) {
         <button className='save-changes'>Save Changes</button>
         </ModalContainer>
         )
+    }else if(deleteTask === true){
+        return (
+            <ModalContainer darkMode={context.darkMode}> 
+                <h2 className='modal-title'>Delete Task?</h2>
+                <p className="warning">Are you sure you want to delete the ‘Build settings UI’ task and its subtasks? This action cannot be reversed.</p>
+                <div className='btn-container'>
+                    <button className='btn delete-task'>Delete</button>
+                    <button className='btn cancel-delete'>Cancel</button>
+                </div>
+           </ModalContainer>
+        )
     }
     else {  
     return (
-        <ModalContainer onMouseEnter={()=> setInModal(true)} onMouseLeave={()=> setInModal(false)}>
+        <ModalContainer onMouseEnter={()=> setInModal(true)} onMouseLeave={()=> setInModal(false)} darkMode={context.darkMode}>
             <div className='task-name'>
                 <p className='task-title'>
                         {filteredTask.title}
@@ -65,7 +74,7 @@ function TaskDetails({setInModal, setDropDownOpen}) {
                     {editMenu && 
                     <div className='edit-menu'>
                         <p onClick={() => setEdit(true)}>Edit Task</p>
-                        <p style={{color: "#EA5555"}}>Delete Task</p>
+                        <p style={{color: "#EA5555"}} onClick={() => setDeleteTask(true)}>Delete Task</p>
                     </div>
                     }   
                 </span>
@@ -89,6 +98,9 @@ function TaskDetails({setInModal, setDropDownOpen}) {
             control={<Checkbox checked={subtask.isCompleted} 
             size='medium' 
             sx={{
+                color: {
+                    color: context.darkMode ? "#FFFFFF" : "inherit"
+                },
                 "&.Mui-checked":{
                     color: '#635FC7',
                 }
@@ -116,7 +128,8 @@ const ModalContainer = styled.div`
     width: 480px;
     height: auto;
     padding: 14px 32px 32px;
-    background-color: #FFFFFF;
+    background-color: ${props => props.darkMode ?"#2B2C37" : "#FFFFFF" };
+    color: ${props => props.darkMode ? "#FFFFFF" : "#000000"};
     border-radius: 6px;   
 
     .task-name{
@@ -136,7 +149,8 @@ const ModalContainer = styled.div`
         border-radius: 8px;
         width: 192px;
         height: 94px;
-        background-color: #FFFFFF;
+        background-color: ${props => props.darkMode ?"#2B2C37" : "#FFFFFF" };
+        color: ${props => props.darkMode ? "#FFFFFF" : "#000000"};
         font-family: Plus Jakarta Sans;
         font-size: 13px;
         font-weight: 500;
@@ -167,7 +181,7 @@ const ModalContainer = styled.div`
         width: 416px;
         min-height: 40px;
         margin-bottom: 8px;
-        background-color: #F4F7FD;
+        background-color: ${props => props.darkMode ?"#2B2C37" :"#F4F7FD"};
         font-family: Plus Jakarta Sans;
         font-size: 12px;
         font-weight: 700;
@@ -225,8 +239,8 @@ const ModalContainer = styled.div`
         width: 100%;
         height: 40px;
         margin-bottom: 24px;
-        background-color: #635FC71A;
-        color: #635FC7;
+        background-color: ${props => props.darkMode ?"#FFFFFF" : "#635FC71A" };
+        color: ${props => props.darkMode ? "#635FC7" : "#000000"};
         font-family: Plus Jakarta Sans;
         font-size: 13px;
         font-weight: 700;
@@ -259,6 +273,57 @@ const ModalContainer = styled.div`
         position: absolute;
         top: calc(50% - 22px);
         transform: translate(0%, -50%);
+        background-color: ${props => props.darkMode ?"#2B2C37" : "#FFFFFF" };
+        color: ${props => props.darkMode ? "#FFFFFF" : "#000000"};
+
+    }
+    
+    .modal-title {
+        margin: 18px 0 24px;
+        font-family: Plus Jakarta Sans;
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 22.68px;
+        text-align: left;
+        color: #EA5555;
+    }
+
+    .warning{
+        font-family: Plus Jakarta Sans;
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 23px;
+        text-align: left;
+        color: #828FA3;
+    }
+
+    .btn-container{
+        width: 416px;
+        height: 40px;
+        display: flex;
+        justify-content: space-between;
+        margin: 24px 0 8px;
+    }
+    .btn{
+        width: 200px;
+        height: 40px;
+        border-radius: 20px;
+        border: none;
+        font-family: Plus Jakarta Sans;
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 23px;
+        text-align: center;
+    }
+
+    .delete-task{
+        background-color: #EA5555;
+        color: #FFFFFF;
+    }
+
+    .cancel-delete {
+        background-color: ${props => props.darkMode ? "#FFFFFF" : "#635FC71A"};
+        color: #635FC7;
     }
 
     input {
@@ -267,6 +332,8 @@ const ModalContainer = styled.div`
         height: 40px;
         display: inline-block;
         border-radius: 4px;
+        background-color: ${props => props.darkMode ?"#2B2C37" : "#FFFFFF" };
+        color: ${props => props.darkMode ? "#FFFFFF" : "#000000"};
     }
 
     select {
@@ -274,6 +341,7 @@ const ModalContainer = styled.div`
         border: 1px solid #828FA340;
         border-radius: 4px;
         background-color: transparent;
+        color: ${props => props.darkMode ? "#FFFFFF" : "#000000"};
     }
 
     img {
@@ -287,9 +355,7 @@ const ModalContainer = styled.div`
         border: 1px solid #828FA340;
         resize: none;
         border-radius: 4px;
+        background-color: ${props => props.darkMode ?"#2B2C37" : "#FFFFFF" };
+        color: ${props => props.darkMode ? "#FFFFFF" : "#000000"};
     }
-`
-
-const EditTask = styled.div`
-    
 `

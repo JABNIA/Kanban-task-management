@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useKanbanContext } from '../Hooks/useContext'
 
@@ -6,6 +6,9 @@ import { useKanbanContext } from '../Hooks/useContext'
 
 function Header() {
     const context = useKanbanContext()
+    const [editBoardMenu, setEditBoardMenu] = useState(false)
+
+
   return (
     <Container sideMenu={context.sideMenu} darkMode={context.darkMode}>
         <LogoContainer darkMode={context.darkMode}>
@@ -17,9 +20,25 @@ function Header() {
                 context.setModal(true)
                 context.setAddNewTask(true)
                 context.setDetails(false)
+                context.setNewBoardMenu(false)
                 }}>+ Add New Task</AddButton>
-            <svg width="5" height="20" xmlns="http://www.w3.org/2000/svg"><g fill="#828FA3" fill-rule="evenodd"><circle cx="2.308" cy="2.308" r="2.308"/><circle cx="2.308" cy="10" r="2.308"/><circle cx="2.308" cy="17.692" r="2.308"/></g></svg>
+            <svg width="5" height="20" xmlns="http://www.w3.org/2000/svg" onClick={() => setEditBoardMenu(curr => !curr)}><g fill="#828FA3" fill-rule="evenodd"><circle cx="2.308" cy="2.308" r="2.308"/><circle cx="2.308" cy="10" r="2.308"/><circle cx="2.308" cy="17.692" r="2.308"/></g></svg>
+                {
+                editBoardMenu && 
+                <div className='edit-board-menu'>
+                    <p onClick={() => {
+                        context.setModal(true)
+                        context.setEditBoardMenu(true)
+                        }}>Edit Board</p>
+                    <p onClick={() => {
+                        context.setModal(true)
+                        context.setDeleteBoardModal(true)
+                        }}
+                        style={{color: "#EA5555"}} 
+                        >Delete Board</p>
 
+                </div>
+                }
         </div>
     </Container>
   )
@@ -28,6 +47,7 @@ function Header() {
 export default Header
 
 const Container = styled.div`
+    position: relative;
     width: 1440px;
     height: 97px;
     background-color: ${props => props.darkMode ? "#2B2C37" : "#FFFFFF"};
@@ -37,10 +57,24 @@ const Container = styled.div`
     display: grid;
     grid-template-columns: ${(props) => props.sideMenu ?"300px 914px 226px" :"209px 1005px 226px"};
     color: ${props => props.darkMode ? "#FFFFFF" : "#000000"};
+   
     .btn-box{
         padding: 20px 61px 0 0;
         display: flex;
         column-gap: 24px;
+    }
+
+    .edit-board-menu {
+        position: absolute;
+        top: 90px;
+        right: 24px;
+        width: 192px;
+        height: 94px;
+        background-color:#FFFFFF;
+        color: #828FA3;
+        padding: 0 16px;
+        border-radius: 8px;
+        z-index: 5;
     }
     
     h2 {

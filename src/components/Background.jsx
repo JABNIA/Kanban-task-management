@@ -4,6 +4,7 @@ import { useKanbanContext } from '../Hooks/useContext'
 import TaskDetails from './TaskDetails'
 import AddNewTask from './AddNewTask'
 import AddNewBoard from './AddNewBoard'
+import EditBoard from './EditBoard'
 
 function Background() {
   const context = useKanbanContext()
@@ -17,9 +18,10 @@ function Background() {
 
   return (
     <ModalBackground onClick={handleClick} id='background'>
-      {context.details && <TaskDetails setInModal={setInModal} setDropDownOpen ={setDropDownOpen}/>}
+      {context.details && <TaskDetails setInModal={setInModal} setDropDownOpen ={setDropDownOpen} />}
       {context.newBoardMenu && <AddNewBoard setInModal={setInModal} setDropDownOpen ={setDropDownOpen} />}
-      {context.addNewTask && <AddNewTask setInModal={setInModal} setDropDownOpen ={setDropDownOpen}/>}
+      {context.addNewTask && <AddNewTask setInModal={setInModal} setDropDownOpen ={setDropDownOpen} />}
+      {context.editBoardMenu && <EditBoard setInModal={setInModal} setDropDownOpen ={setDropDownOpen} />}
     </ModalBackground>
   )
 }
