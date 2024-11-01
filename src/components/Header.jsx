@@ -33,16 +33,18 @@ function Header() {
                         context.setNewBoardMenu(false);
                         context.setEditBoardMenu(true);
                         context.setDeleteBoardModal(false);
-
+                        setEditBoardMenu(false)
                         }}>Edit Board</p>
                     <p onClick={() => {
                         context.setModal(true)
                         context.setDetails(false);
                         context.setAddNewTask(false);
                         context.setNewBoardMenu(false);
-                        context.setEditBoardMenu(false);
+                        context.setEditBoardMenu(true);
                         context.setDeleteBoardModal(true);
-                        }}
+                        setEditBoardMenu(false)
+   
+                    }}
                         style={{color: "#EA5555"}} 
                         >Delete Board</p>
 

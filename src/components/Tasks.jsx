@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useKanbanContext } from '../Hooks/useContext'
 
@@ -8,37 +8,58 @@ function Tasks() {
     
   return (
     <TaskContainer sidemenu={context.sideMenu}>
-      {board.columns.map(column => {return (
-          <Column darkMode={context.darkMode}>
-          <h2>{column.name}</h2>
-            {column.tasks.map(task => {
-                let completedCounter = task.subtasks.filter(subtask => subtask.isCompleted).length;                    
-                
-                return (
-                <Task darkMode = {context.darkMode}
-                onClick={() => {
-                    context.setModal(true);
-                    context.setDetails(true);
-                    context.setAddNewTask(false);
-                    context.setNewBoardMenu(false);
-                    context.setEditBoardMenu(false);
-                    context.setSelectedTask(task.title);
-                }}
-                >
-                    <p className='tasktitle'>{task.title}</p>
-                    <p className='subtasks'>subtasks {completedCounter} of {task.subtasks.length}</p>
-                </Task>
-            )
-            })}
-        </Column>
-            )
-      })}
+      {board.columns.map(column => <Column column={column} />
+      )}
     </TaskContainer>
   )
 }
 
 export default Tasks
 
+//single column display function component
+
+function Column({column}) {
+    const context = useKanbanContext()
+
+    return (
+        <ColumnWrapper darkMode={context.darkMode}>
+        <h2>{column.name}</h2>
+            {column.tasks.map(task => {
+                
+                return <Task columnTask = {task} />
+            })}
+        </ColumnWrapper>
+    )
+}
+
+
+
+//single task functional component
+
+function Task({columnTask}) {
+    const context = useKanbanContext()
+    let subtaskCompleted = columnTask.subtasks.filter(subtask => subtask.isCompleted).length;                    
+
+    return(
+            <TaskWrapper darkMode = {context.darkMode}
+                onClick={() => {
+                    //this controlls different modal states
+                    context.setModal(true);
+                    context.setDetails(true);
+                    context.setAddNewTask(false);
+                    context.setNewBoardMenu(false);
+                    context.setEditBoardMenu(false);
+                    context.setSelectedTask(columnTask.title);
+                }}
+                >
+                    <p className='tasktitle'>{columnTask.title}</p>
+                    <p className='subtasks'>subtasks {subtaskCompleted} of {columnTask.subtasks.length}</p>
+            </TaskWrapper>
+    )
+}
+
+
+//styled components
 
 const TaskContainer = styled.div`
     position: absolute;
@@ -50,13 +71,13 @@ const TaskContainer = styled.div`
     gap: 24px;
 `
 
-const Column = styled.div`
+const ColumnWrapper = styled.div`
     width: 280px;
     height: auto;
     color: ${props => props.darkMode ? "#FFFFFF":"#000000"};
 `
 
-const Task = styled.div`
+const TaskWrapper = styled.div`
     width: 280px;
     min-height: 88px;
     margin-bottom: 20px;
