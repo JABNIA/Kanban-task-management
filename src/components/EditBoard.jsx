@@ -8,7 +8,7 @@ function EditBoard({setInModal, setDropDownOpen}) {
 
     if (context.deleteBoardModal === true){
         return (
-            <ModalWrapper darkMode={context.darkMode}> 
+            <ModalWrapper onMouseEnter={()=> setInModal(true)} onMouseLeave={()=> setInModal(false)} darkMode={context.darkMode}> 
                 <h2 className='modal-title'>Delete Board?</h2>
                 <p className="warning">Are you sure you want to delete the ‘Platform Launch’ board? This action will remove all columns and tasks and cannot be reversed.</p>
                 <div className='btn-container'>
@@ -19,7 +19,7 @@ function EditBoard({setInModal, setDropDownOpen}) {
         )
     }else{
         return (
-            <ModalWrapper darkMode={context.darkMode}>
+            <ModalWrapper onMouseEnter={()=> setInModal(true)} onMouseLeave={()=> setInModal(false)} darkMode={context.darkMode}>
         <h2>Edit Board</h2>
             <div className='input-wrapper'>
                 <label htmlFor="title">Board Name</label>

@@ -127,6 +127,7 @@ export const ModalWrapper = styled.div`
     }
 
     .modal-title {
+        width: 387px;
         margin: 18px 0 24px;
         font-family: Plus Jakarta Sans;
         font-size: 18px;

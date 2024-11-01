@@ -52,7 +52,7 @@ function TaskDetails({setInModal, setDropDownOpen}) {
         )
     }else if(deleteTask === true){
         return (
-            <ModalContainer darkMode={context.darkMode}> 
+            <ModalContainer onMouseEnter={()=> setInModal(true)} onMouseLeave={()=> setInModal(false)} darkMode={context.darkMode}> 
                 <h2 className='modal-title'>Delete Task?</h2>
                 <p className="warning">Are you sure you want to delete the ‘Build settings UI’ task and its subtasks? This action cannot be reversed.</p>
                 <div className='btn-container'>
@@ -270,12 +270,9 @@ const ModalContainer = styled.div`
     }
 
     .task-title{
-        position: absolute;
-        top: calc(50% - 22px);
-        transform: translate(0%, -50%);
+        width: 387px;
         background-color: ${props => props.darkMode ?"#2B2C37" : "#FFFFFF" };
         color: ${props => props.darkMode ? "#FFFFFF" : "#000000"};
-
     }
     
     .modal-title {

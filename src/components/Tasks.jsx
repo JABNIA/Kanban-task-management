@@ -20,6 +20,8 @@ function Tasks() {
                     context.setModal(true);
                     context.setDetails(true);
                     context.setAddNewTask(false);
+                    context.setNewBoardMenu(false);
+                    context.setEditBoardMenu(false);
                     context.setSelectedTask(task.title);
                 }}
                 >

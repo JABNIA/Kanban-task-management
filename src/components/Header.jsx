@@ -28,11 +28,20 @@ function Header() {
                 <div className='edit-board-menu'>
                     <p onClick={() => {
                         context.setModal(true)
-                        context.setEditBoardMenu(true)
+                        context.setDetails(false);
+                        context.setAddNewTask(false);
+                        context.setNewBoardMenu(false);
+                        context.setEditBoardMenu(true);
+                        context.setDeleteBoardModal(false);
+
                         }}>Edit Board</p>
                     <p onClick={() => {
                         context.setModal(true)
-                        context.setDeleteBoardModal(true)
+                        context.setDetails(false);
+                        context.setAddNewTask(false);
+                        context.setNewBoardMenu(false);
+                        context.setEditBoardMenu(false);
+                        context.setDeleteBoardModal(true);
                         }}
                         style={{color: "#EA5555"}} 
                         >Delete Board</p>
