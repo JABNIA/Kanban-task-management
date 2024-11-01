@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useKanbanContext } from '../Hooks/useContext'
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
+import Details from './Detalis'
+import EditDetails from './EditDetails'
+import DeleteTask from './DeleteTaskModal'
 
 
 function TaskDetails({setInModal, setDropDownOpen}) {
@@ -16,149 +17,27 @@ function TaskDetails({setInModal, setDropDownOpen}) {
     const [editMenu, setEditMenu] = useState(false)
     const [deleteTask, setDeleteTask] = useState(false)
     
-    if(edit === true){
-        //returns selected task details
-        return <EditDetails context={context} currentTask={filteredTask} setInModal={setInModal} editMenu={editMenu} subtasks={subtasks}/>
-
-    }else if(deleteTask === true){
-        //returns selected task deleting menu
-        return <DeleteTask context={context} currentTask={filteredTask} setInModal={setInModal} setDeleteTask={setDeleteTask} setEdit={setEdit}/>
-    }
-    else {  
-        //returns edit menu for selected task
-        return <Details context={context} currentTask={filteredTask} setInModal={setInModal} setDropDownOpen={setDropDownOpen} setEditMenu={setEditMenu} editMenu={editMenu}  setEdit={setEdit}/>
-}
+    
+    if(edit === true) {
+            //returns selected task details
+            return <EditDetails context={context} currentTask={filteredTask} setInModal={setInModal} editMenu={editMenu} subtasks={subtasks}/>
+        }
+        else if(deleteTask === true) {
+            //returns selected task deleting menu
+            return <DeleteTask context={context} currentTask={filteredTask} setInModal={setInModal} setDeleteTask={setDeleteTask} setEdit={setEdit}/>
+        }
+        else {  
+            //returns edit menu for selected task
+            return <Details context={context} currentTask={filteredTask} setInModal={setInModal} setDropDownOpen={setDropDownOpen} setEditMenu={setEditMenu} editMenu={editMenu}  setEdit={setEdit} setDeleteTask={setDeleteTask}/>
+        }   
 }
 
 export default TaskDetails
 
 
-//Modal for Task details
-
-function Details({context, currentTask, setInModal, setDeleteTask, editMenu, setEditMenu, subtasks, setEdit}) {
-
-    return(
-        <ModalContainer onMouseEnter={()=> setInModal(true)} onMouseLeave={()=> setInModal(false)} darkMode={context.darkMode}>
-            <div className='task-name'>
-                <p className='task-title'>
-                        {currentTask.title}
-                </p>
-                <span onClick={() => setEditMenu(curr => !curr)} className='menu-button'>
-                    <svg width="5" height="20" xmlns="http://www.w3.org/2000/svg"><g fill="#828FA3" fill-rule="evenodd"><circle cx="2.308" cy="2.308" r="2.308"/><circle cx="2.308" cy="10" r="2.308"/><circle cx="2.308" cy="17.692" r="2.308"/></g></svg>
-                    {editMenu && <EditDropdown setDeleteTask={setDeleteTask} setEdit={setEdit}/>}   
-                </span>
-            </div>
-          
-
-            <p className='task-description'>
-                {currentTask.description}
-            </p>
-            <p className='subtasks'>
-               Subtasks ({subtasks} of {currentTask.subtasks.length})
-            </p>
-
-            {currentTask.subtasks.map(subtask => {
-                const label = {inputProps: {"aria-label": subtask.title} }
-                return(
-
-                    //material ui component for checkboxes
-
-                    <div className='subtask-wrapper'>
-                        <FormControlLabel
-                        label= {subtask.title}
-                        control={<Checkbox checked={subtask.isCompleted} 
-                        size='medium' 
-                        sx={{
-                            color: {
-                                color: context.darkMode ? "#FFFFFF" : "inherit"
-                            },
-                            "&.Mui-checked":{
-                                color: '#635FC7',
-                            }
-                        }} />}
-                        >
-                        </FormControlLabel>
-                    </div>
-                    //material ui checkboxes ends here
-                    )
-                }
-            )}
-        <p>Current status</p>
-        <select name="column" className='status'>
-            {context.boards[context.activeBoard]
-            .columns.map(column => <option className='option'>{column.name}</option>)}
-        </select>
-        </ModalContainer>
-    ) 
-}
-
-function EditDetails({context, currentTask, setInModal, setDropDownOpen}) {
-    return (
-        <ModalContainer onMouseEnter={()=> setInModal(true)} onMouseLeave={()=> setInModal(false)} darkMode={context.darkMode}>
-        <h2>Edit Task</h2>
-        <div className='input-wrapper'>
-            <label htmlFor="title">Title</label>
-            <input type="text" name="title" value={currentTask.title}/>                
-        </div>
-        <div className='input-wrapper'>
-            <label htmlFor="description">Description</label>
-            <textarea name="description" id="desc" cols="30" rows="5"></textarea>
-        </div>
-        <div className='input-wrapper' onMouseEnter={() => setInModal(true)} onMouseLeave={() => setInModal(false)}>
-            <label htmlFor="">Subtasks</label>
-            {currentTask.subtasks.map(subtask => { return(
-                <div className='subtask-input'>
-                    <input type="text" value={subtask.title} /> <img src="./assets/icon-cross.svg" alt="cllosing cross" />
-                </div>
-                    )
-                }
-            )}
-        </div>
-        <button class="new-sub-task">+ Add New Subtask</button>
-        <div className='input-wrapper' onMouseEnter={() => setInModal(true)} onMouseLeave={() => setInModal(false)}>
-            <label htmlFor="">Status</label>
-            <SelectMenu context={context} columns={context.boards[context.activeBoard].columns} setDropDownOpen={setDropDownOpen}/>
-        </div>
-    <button className='save-changes'>Save Changes</button>
-    </ModalContainer>
-    )
-}
-
-//delete task modal
-function DeleteTask({context, currentTask, setInModal}) {
-    return (
-            <ModalContainer onMouseEnter={()=> setInModal(true)} onMouseLeave={()=> setInModal(false)} darkMode={context.darkMode}> 
-                <h2 className='modal-title'>Delete Task?</h2>
-                <p className="warning">Are you sure you want to delete the ‘Build settings UI’ task and its subtasks? This action cannot be reversed.</p>
-                <div className='btn-container'>
-                    <button className='btn delete-task'>Delete</button>
-                    <button className='btn cancel-delete'>Cancel</button>
-                </div>
-            </ModalContainer>
-    )
-}
-
-function EditDropdown({setDeleteTask, setEdit}) {
-    return (
-    <div className='edit-menu'>
-        <p onClick={() => setEdit(true)}>Edit Task</p>
-        <p style={{color: "#EA5555"}} onClick={() => setDeleteTask(true)}>Delete Task</p>
-    </div>
-    )
-}
-
-
-//subtasks 
-function SelectMenu({context, columns, setDropDownOpen}){
-    return (
-            <select name="status" onFocus={() => setDropDownOpen(true)} onBlur={() => setDropDownOpen(false)}>
-                {columns.map(column => <option className='option'>{column.name}</option>)}
-            </select>
-    )
-}
 //styled components
 
-const ModalContainer = styled.div`
+export const ModalContainer = styled.div`
     width: 480px;
     height: auto;
     padding: 14px 32px 32px;
