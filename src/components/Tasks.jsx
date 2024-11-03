@@ -5,11 +5,50 @@ import { useKanbanContext } from '../Hooks/useContext'
 function Tasks() {
     const context = useKanbanContext()
     const board = context.boards[context.activeBoard]
-    
+    const [currentBoard, setCurrentBoard] = useState(board)
+    console.log(board)
+
+
+    function handleAddNewColumn() {
+        setCurrentBoard({...currentBoard, 
+            columns: [...currentBoard.columns, {
+                name: "new Column",
+                tasks: [
+                    {
+                    title: "Build UI for onboarding flow",
+                    description: "",
+                    status: "Todo",
+                    subtasks: [
+                      {
+                        title: "Sign up page",
+                        isCompleted: true
+                      },
+                      {
+                        title: "Sign in page",
+                        isCompleted: false
+                      },
+                      {
+                        title: "Welcome page",
+                        isCompleted: false
+                      }]
+                },
+            ],
+            }
+        ]
+    },
+        )    
+
+        }
+
+
   return (
     <TaskContainer sidemenu={context.sideMenu}>
-      {board.columns.map(column => <Column column={column} />
+      {
+      currentBoard.columns.map(column => <Column column={column}/>
       )}
+        <AddNewColumnRectangle darkMode={context.darkModeno} onClick={handleAddNewColumn}>
+            <h3>+ Add New Column</h3>
+        </AddNewColumnRectangle>
     </TaskContainer>
   )
 }
@@ -25,7 +64,6 @@ function Column({column}) {
         <ColumnWrapper darkMode={context.darkMode}>
         <h2>{column.name}</h2>
             {column.tasks.map(task => {
-                
                 return <Task columnTask = {task} />
             })}
         </ColumnWrapper>
@@ -63,7 +101,7 @@ function Task({columnTask}) {
 
 const TaskContainer = styled.div`
     position: absolute;
-    top: 121px;
+    top: 97px;
     left: ${(props) => props.sidemenu ? "324px" : "24px"};
     width: 100%;
     height: 100%;
@@ -102,5 +140,27 @@ const TaskWrapper = styled.div`
         line-height: 15.12px;
         text-align: left;
         color: #828FA3;
+    }
+`
+
+const AddNewColumnRectangle = styled.div`
+    width: 280px;
+    height: 814px;
+    background-image: ${(props) => props.darkMode ? 
+                    "linear-gradient(180deg, rgba(43, 44, 55, 0.25) 0%, rgba(43, 44, 55, 0.125) 100%)" : 
+                    "linear-gradient(180deg, #E9EFFA 0%, rgba(233, 239, 250, 0.5) 100%)"};
+    margin-top: 63px;
+    border-radius: 6px;
+    color: #828FA3;
+    text-align: center;
+    cursor: pointer;
+    
+    h3 {
+        margin-top: 392px;
+        font-family: Plus Jakarta Sans;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 30.24px;
+        text-align: center;
     }
 `

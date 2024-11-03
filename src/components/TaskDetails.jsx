@@ -20,7 +20,7 @@ function TaskDetails({setInModal, setDropDownOpen}) {
     
     if(edit === true) {
             //returns selected task details
-            return <EditDetails context={context} currentTask={filteredTask} setInModal={setInModal} editMenu={editMenu} subtasks={subtasks}/>
+            return <EditDetails context={context} currentTask={filteredTask} setInModal={setInModal} setDropDownOpen={setDropDownOpen} editMenu={editMenu} subtasks={subtasks}/>
         }
         else if(deleteTask === true) {
             //returns selected task deleting menu
@@ -48,7 +48,7 @@ export const ModalContainer = styled.div`
     .task-name{
         position: relative;
         width: 416px;
-        height: 69px;
+        height: auto;
         font-family: Plus Jakarta Sans;
         font-size: 18px;
         font-weight: 700;

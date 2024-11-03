@@ -47,7 +47,6 @@ function Header() {
                     }}
                         style={{color: "#EA5555"}} 
                         >Delete Board</p>
-
                 </div>
                 }
         </div>
@@ -70,7 +69,7 @@ const Container = styled.div`
     color: ${props => props.darkMode ? "#FFFFFF" : "#000000"};
    
     .btn-box{
-        padding: 20px 61px 0 0;
+        padding: 20px 32.38px 0 0;
         display: flex;
         column-gap: 24px;
     }

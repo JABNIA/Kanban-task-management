@@ -42,7 +42,7 @@ function BoardEditModal({setInModal, context}) {
 
 
 function DeleteBoardMenu({setInModal, context}) {
-    return  (
+    return (
             <ModalWrapper onMouseEnter={()=> setInModal(true)} onMouseLeave={()=> setInModal(false)} darkMode={context.darkMode}> 
                 <h2 className='modal-title'>Delete Board?</h2>
                 <p className="warning">Are you sure you want to delete the ‘Platform Launch’ board? This action will remove all columns and tasks and cannot be reversed.</p>
