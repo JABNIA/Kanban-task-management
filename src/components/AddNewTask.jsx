@@ -1,11 +1,35 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useKanbanContext } from '../Hooks/useContext'
 
 function AddNewTask({setInModal, setDropDownOpen}) {
-
     const context = useKanbanContext()
+    const [taskTitle, setTaskTitle] = useState("");
+    const [taskDescription, setTaskDescription] = useState("");
+    const [taskStatus, setTaskStatus] = useState("Todo");
+    
+    function handleCreateTask() {
+    const subtasks = Array.from(document.querySelectorAll(".subtask-field"))
+    const subtasksValues = subtasks.map(subtask => {
+        return {
+            title: subtask.value,
+            isCompleted: false
+        }
+    })
+    const [tasks] = context.boards[context.activeBoard].columns.filter(column => column.name === taskStatus)
 
+
+    // const setTaskStatus(document.getElementById("status-field").value)
+    console.log(tasks.tasks)
+    tasks.tasks.push({
+        title: taskTitle,
+        description: taskDescription,
+        status: taskStatus,
+        subtasks: subtasksValues
+    })
+
+    context.setBoards(context.boards)
+}
 
 
   return (
@@ -13,27 +37,28 @@ function AddNewTask({setInModal, setDropDownOpen}) {
       <h2>Add New Task</h2>
         <div className='input-wrapper'>
             <label htmlFor="">Title</label>
-            <input type="text" />
+            <input type="text" onChange={(event) => setTaskTitle(event.target.value)}/>
         </div>
         <div className='input-wrapper'>
             <label htmlFor="">Description</label>
-            <textarea name="desxcription" id="" cols="30" rows="6"></textarea>
+            <textarea name="desxcription" id="" cols="30" rows="6" onChange={(event) => setTaskDescription(event.target.value)}></textarea>
         </div>
-        <div className='input-wrapper' onMouseEnter={() => setInModal(true)} onMouseLeave={() => setInModal(false)}>
+        <div className='input-wrapper' id="subtasks-container" onMouseEnter={() => setInModal(true)} onMouseLeave={() => setInModal(false)}>
             <label htmlFor="">Subtasks</label>
-            <div className='subtask-input'>
-                <input type="text" /> <img src="./assets/icon-cross.svg" alt="" />
+            <div className='subtask-input subtask' id='0'>
+                <input type="text" className='subtask-field'/> <img src="./assets/icon-cross.svg" alt="" />
             </div>
         </div>
         <button class="new-sub-task">+ Add New Subtask</button>
         <div className='input-wrapper' onMouseEnter={() => setInModal(true)} onMouseLeave={() => setInModal(false)}>
             <label htmlFor="">Status</label>
-            <select name="status" onFocus={() => setDropDownOpen(true)} onBlur={() => setDropDownOpen(false)}>
+            <select name="status" id="status-field" value={taskStatus} onChange={(event) => setTaskStatus(event.target.value)} 
+            onFocus={() => setDropDownOpen(true)} onBlur={() => setDropDownOpen(false)}>
                 {context.boards[context.activeBoard]
                 .columns.map(column => <option className='option'>{column.name}</option>)}
             </select>
         </div>
-        <button className='create-task'>Create Task</button>
+        <button className='create-task' onClick={handleCreateTask}>Create Task</button>
     </ModalWrapper>
   )
 }

@@ -5,16 +5,13 @@ import { useKanbanContext } from '../Hooks/useContext'
 function Tasks() {
     const context = useKanbanContext()
     const board = context.boards[context.activeBoard]
-    const [currentBoard, setCurrentBoard] = useState(board)
-    console.log(board)
+    
 
 
     function handleAddNewColumn() {
-        setCurrentBoard({...currentBoard, 
-            columns: [...currentBoard.columns, {
-                name: "new Column",
-                tasks: [
-                    {
+            const newTask = ({
+                name: "New Column",
+                tasks: [{
                     title: "Build UI for onboarding flow",
                     description: "",
                     status: "Todo",
@@ -30,21 +27,23 @@ function Tasks() {
                       {
                         title: "Welcome page",
                         isCompleted: false
-                      }]
-                },
-            ],
-            }
-        ]
-    },
-        )    
+                      }
+                    ]
+                  }
+                ]
+            })
 
+            context.boards[context.activeBoard].columns.push(newTask)
+
+            context.setBoards([...context.boards])
         }
+
 
 
   return (
     <TaskContainer sidemenu={context.sideMenu}>
       {
-      currentBoard.columns.map(column => <Column column={column}/>
+      board.columns.map(column => <Column column={column}/>
       )}
         <AddNewColumnRectangle darkMode={context.darkModeno} onClick={handleAddNewColumn}>
             <h3>+ Add New Column</h3>
