@@ -5,8 +5,6 @@ import { useKanbanContext } from '../Hooks/useContext'
 function Tasks() {
     const context = useKanbanContext()
     const board = context.boards[context.activeBoard]
-    
-
 
     function handleAddNewColumn() {
             const newTask = ({
@@ -45,7 +43,7 @@ function Tasks() {
       {
       board.columns.map(column => <Column column={column}/>
       )}
-        <AddNewColumnRectangle darkMode={context.darkModeno} onClick={handleAddNewColumn}>
+        <AddNewColumnRectangle darkMode={context.darkMode} onClick={handleAddNewColumn}>
             <h3>+ Add New Column</h3>
         </AddNewColumnRectangle>
     </TaskContainer>
@@ -146,8 +144,8 @@ const AddNewColumnRectangle = styled.div`
     width: 280px;
     height: 814px;
     background-image: ${(props) => props.darkMode ? 
-                    "linear-gradient(180deg, rgba(43, 44, 55, 0.25) 0%, rgba(43, 44, 55, 0.125) 100%)" : 
-                    "linear-gradient(180deg, #E9EFFA 0%, rgba(233, 239, 250, 0.5) 100%)"};
+                    "linear-gradient(180deg, rgba(43, 44, 55, 0.25) 0%, rgba(43, 44, 55, 0.125) 100%)"
+                    : "linear-gradient(180deg, #E9EFFA 0%, rgba(233, 239, 250, 0.5) 100%)"};
     margin-top: 63px;
     border-radius: 6px;
     color: #828FA3;

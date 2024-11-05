@@ -13,8 +13,8 @@ const boardsArr = data.boards
 function App() {
   const [boards, setBoards] = useState(boardsArr);
   const [activeBoard, setActiveBoard] = useState(0);
-  const [sidemenu, setSideMenu] = useState(true);
-  const [darkMode, setDarkMode] = useState(false);
+  const [sidemenu, setSideMenu] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
   const [modal, setModal] = useState(false)
   const [details, setDetails] = useState(false);
   const [selectedTask, setSelectedTask] = useState("");

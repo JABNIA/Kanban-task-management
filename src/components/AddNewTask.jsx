@@ -7,7 +7,9 @@ function AddNewTask({setInModal, setDropDownOpen}) {
     const [taskTitle, setTaskTitle] = useState("");
     const [taskDescription, setTaskDescription] = useState("");
     const [taskStatus, setTaskStatus] = useState("Todo");
-    
+    const [newSubtask, setNewSubtask] = useState([1]);
+
+
     function handleCreateTask() {
     const subtasks = Array.from(document.querySelectorAll(".subtask-field"))
     const subtasksValues = subtasks.map(subtask => {
@@ -17,7 +19,6 @@ function AddNewTask({setInModal, setDropDownOpen}) {
         }
     })
     const [tasks] = context.boards[context.activeBoard].columns.filter(column => column.name === taskStatus)
-
 
     // const setTaskStatus(document.getElementById("status-field").value)
     console.log(tasks.tasks)
@@ -29,6 +30,15 @@ function AddNewTask({setInModal, setDropDownOpen}) {
     })
 
     context.setBoards(context.boards)
+    context.setModal(false)
+    context.setAddNewTask(false)
+
+}
+
+function handleAddNewSubtask(){
+    setNewSubtask(
+        [...newSubtask, newSubtask.length+1]
+    )
 }
 
 
@@ -43,19 +53,17 @@ function AddNewTask({setInModal, setDropDownOpen}) {
             <label htmlFor="">Description</label>
             <textarea name="desxcription" id="" cols="30" rows="6" onChange={(event) => setTaskDescription(event.target.value)}></textarea>
         </div>
-        <div className='input-wrapper' id="subtasks-container" onMouseEnter={() => setInModal(true)} onMouseLeave={() => setInModal(false)}>
+        <div className='input-wrapper subtasks' id="subtasks-container" >
             <label htmlFor="">Subtasks</label>
-            <div className='subtask-input subtask' id='0'>
-                <input type="text" className='subtask-field'/> <img src="./assets/icon-cross.svg" alt="" />
-            </div>
+            {newSubtask.map((subtaskNumber, index) => <SubtaskInput key={subtaskNumber} index={index} subtasks={newSubtask} setNewSubtasks={setNewSubtask}/>)}
         </div>
-        <button class="new-sub-task">+ Add New Subtask</button>
-        <div className='input-wrapper' onMouseEnter={() => setInModal(true)} onMouseLeave={() => setInModal(false)}>
+        <button class="new-sub-task" onClick={handleAddNewSubtask}>+ Add New Subtask</button>
+        <div className='input-wrapper'>
             <label htmlFor="">Status</label>
             <select name="status" id="status-field" value={taskStatus} onChange={(event) => setTaskStatus(event.target.value)} 
             onFocus={() => setDropDownOpen(true)} onBlur={() => setDropDownOpen(false)}>
                 {context.boards[context.activeBoard]
-                .columns.map(column => <option className='option'>{column.name}</option>)}
+                .columns.map((column, index) => <option key={index} className='option'>{column.name}</option>)}
             </select>
         </div>
         <button className='create-task' onClick={handleCreateTask}>Create Task</button>
@@ -65,7 +73,23 @@ function AddNewTask({setInModal, setDropDownOpen}) {
 
 export default AddNewTask
 
+function SubtaskInput({index, subtasks, setNewSubtasks}){
 
+    function handleDeleteSubtask(elIndex) {
+        console.log(subtasks)
+        setNewSubtasks(subtasks.filter((element, index) => index !== elIndex).map((element, index) => (element > index+1) ? element - 1 : element))
+        
+    }
+
+    return (
+            <div className='subtask-input subtask'>
+                <input type="text" className='subtask-field'/> <img src="./assets/icon-cross.svg" alt="closing cross" onClick={() => handleDeleteSubtask(index)}/>
+            </div>
+    )
+}
+
+
+//styled components
 export const ModalWrapper = styled.div`
     width: 480px;
     padding: 14px 32px 32px;

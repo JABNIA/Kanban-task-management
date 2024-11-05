@@ -1,10 +1,28 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { ModalWrapper } from './AddNewTask'
 import { useKanbanContext } from '../Hooks/useContext'
 
 function AddNewBoard({setInModal}) {
   const context = useKanbanContext();
+  const [boardTitle, setBoardTitle] = useState("")
+
+  function handleAddNewBoard() {
+    const columns = Array.from(document.querySelectorAll(".column-name")) 
+    const columnNames = columns.map(element => ({name: element.value, tasks: [], })) 
+    console.log(columnNames)
+    if(boardTitle !=="") {
+        context.setBoards(
+          [...context.boards, 
+            {
+              name: boardTitle,
+              columns: columnNames
+            }
+          ]
+        )
+      }
+  }
+
 
   return (
     <ModalWrapper onMouseEnter={()=> setInModal(true)} onMouseLeave={()=> setInModal(false)} darkMode={context.darkMode}>
@@ -12,18 +30,18 @@ function AddNewBoard({setInModal}) {
 
       <div className='input-wrapper'>
             <label htmlFor="">Title</label>
-            <input type="text" />
+            <input type="text" onChange={(event) => setBoardTitle(event.target.value)}/>
         </div>
 
         <div className='input-wrapper'>
-            <label htmlFor="">Subtasks</label>
+            <label htmlFor="">Columns</label>
             <div className='subtask-input'>
-                <input type="text" /> <img src="./assets/icon-cross.svg" alt="" />
+                <input type="text" className='column-name'/> <img src="./assets/icon-cross.svg" alt="Delete column name" />
             </div>
         </div>
-      <button class="new-sub-task">+ Add New Subtask</button>
+      <button class="new-sub-task">+ Add New Column</button>
         
-      <button className='create-task'>Create Task</button>
+      <button className='create-task' onClick ={handleAddNewBoard}>Create Board</button>
     </ModalWrapper>
   )
 }
