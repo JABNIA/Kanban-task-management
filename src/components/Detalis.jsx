@@ -7,7 +7,8 @@ import { useState } from 'react';
 
 function Details({context, currentTask, setInModal, setDeleteTask, editMenu, setEditMenu, subtasks, setEdit, setDropDownOpen}) {
     const columns = context.boards[context.activeBoard].columns
-
+    const [currColumn] = context.boards[context.activeBoard].columns.filter(column => column.tasks.find(task => task === currentTask))
+    const [taskStatus, setTaskStatus] = useState(currColumn.name);
 
 
     return(
@@ -57,7 +58,7 @@ function Details({context, currentTask, setInModal, setDeleteTask, editMenu, set
                 }
             )}
         <p>Current status</p>
-        <SelectMenu context={context} columns={columns} setDropDownOpen={setDropDownOpen}/>
+        <SelectMenu context={context} columns={columns} setDropDownOpen={setDropDownOpen} value={taskStatus} setTaskStatus={setTaskStatus}/>
         
         </ModalContainer>
     ) 

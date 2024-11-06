@@ -6,7 +6,7 @@ function AddNewTask({setInModal, setDropDownOpen}) {
     const context = useKanbanContext()
     const [taskTitle, setTaskTitle] = useState("");
     const [taskDescription, setTaskDescription] = useState("");
-    const [taskStatus, setTaskStatus] = useState("Todo");
+    const [taskStatus, setTaskStatus] = useState(context.boards[context.activeBoard].columns[0].name);
     const [newSubtask, setNewSubtask] = useState([1]);
 
 
@@ -18,11 +18,11 @@ function AddNewTask({setInModal, setDropDownOpen}) {
             isCompleted: false
         }
     })
-    const [tasks] = context.boards[context.activeBoard].columns.filter(column => column.name === taskStatus)
+    const [column] = context.boards[context.activeBoard].columns.filter(column => column.name === taskStatus)
 
     // const setTaskStatus(document.getElementById("status-field").value)
-    console.log(tasks.tasks)
-    tasks.tasks.push({
+    console.log(context.boards)
+    column.tasks.push({
         title: taskTitle,
         description: taskDescription,
         status: taskStatus,
@@ -73,7 +73,7 @@ function handleAddNewSubtask(){
 
 export default AddNewTask
 
-function SubtaskInput({index, subtasks, setNewSubtasks}){
+export function SubtaskInput({index, subtasks, setNewSubtasks}){
 
     function handleDeleteSubtask(elIndex) {
         console.log(subtasks)
