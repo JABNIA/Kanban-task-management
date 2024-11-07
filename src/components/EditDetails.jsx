@@ -6,11 +6,10 @@ function EditDetails({context, currentTask, setInModal, setDropDownOpen}) {
     const [taskTitle, setTaskTitle] = useState(currentTask.title)
     const [taskDescription, setTaskDescription] = useState(currentTask.description)
     const [currColumn] = context.boards[context.activeBoard].columns.filter(column => column.tasks.find(task => task === currentTask))
+    const currColumnIndex = context.boards[context.activeBoard].columns.findIndex(column => column === currColumn)
     const [taskStatus, setTaskStatus] = useState(currColumn.name);
     const [subtasks, setSubtasks] = useState(currentTask.subtasks);
-    
-
-    console.log(subtasks)
+    let taskVariable = currentTask;
 
     function handleAddNewSubtask(){
        setSubtasks([...subtasks, {
@@ -22,24 +21,47 @@ function EditDetails({context, currentTask, setInModal, setDropDownOpen}) {
 
     function handleSaveChanges() {
         const subtaskInputs = Array.from(document.querySelectorAll(".subtask-field"))
-        const subtaskObjects = subtaskInputs.map((element, index) => {
-            
-            if (currentTask.subtasks[index] !== undefined) {
-                return (
-                    {
+        const subtaskObjects = subtaskInputs.map((element, index) => { return (
+                {
                     title: element.value,
-                    isCompleted: currentTask.subtasks[index].isCompleted || currentTask.subtasks[index].isCompleted !== undefined ? true : false, 
-                } 
-            )
-            }else {
-                return ({
-                    title: element.value,
-                    isCompleted: false, 
-                })
-            }
-
+                    isCompleted: currentTask.subtasks[index] !== undefined ? currentTask.subtasks[index].isCompleted ? true : false : false
+                }
+            )   
+        })
+    
         setSubtasks(subtaskObjects)
-    })}
+        taskVariable.subtasks = subtasks
+        
+        context.setBoards(
+            context.boards.map((board, index) => {
+                if(board === context.boards[context.activeBoard]){
+                    return{
+                        ...board,
+                        columns: board.columns.map((column, index) => {
+                            if(index === currColumnIndex){
+                                return {
+                                    ...column,
+                                    tasks: column.tasks.map((task, index) => {
+                                        if(task === currentTask){
+                                            return {
+                                                ...task,
+                                                subtasks: subtaskObjects,
+                                            }
+                                        }
+                                        return task
+                                    })
+                                }
+                            }
+                            return column
+                        })
+                    }
+                }
+            return board
+            })
+        )
+        context.setModal(false)
+        context.setDetails(false)
+    } 
 
     return (
         <ModalContainer onMouseEnter={()=> setInModal(true)} onMouseLeave={()=> setInModal(false)} darkMode={context.darkMode}>
@@ -54,7 +76,7 @@ function EditDetails({context, currentTask, setInModal, setDropDownOpen}) {
         </div>
         <div className='input-wrapper'>
             <label htmlFor="">Subtasks</label>
-            {subtasks.map((subtask, index) => <SubtaskInputInEdit key={index+1} index={index} subtasks={subtask} setSubtasks={setSubtasks} value={subtask.title}/>)}
+            {subtasks.map((subtask, index) => <SubtaskInputInEdit key={index+1} index={index} subtasks={subtasks} setSubtasks={setSubtasks} value={subtask.title}/>)}
 
         </div>
         <button class="new-sub-task" onClick={handleAddNewSubtask}>+ Add New Subtask</button>
@@ -74,7 +96,6 @@ function SubtaskInputInEdit({index, subtasks, setSubtasks, value}) {
     const [subtaskValue, setSubtaskValue] = useState(value)
 
     function handleDeleteSubtask(elIndex) {
-        console.log(subtasks)
         setSubtasks(subtasks.filter((element, index) => index !== elIndex).map((element, index) => (element > index+1) ? element - 1 : element))
         
     }
