@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { useKanbanContext } from '../Hooks/useContext'
+import SelectMenu from './SelectMenu'
 
 function AddNewTask({setInModal, setDropDownOpen}) {
     const context = useKanbanContext()
@@ -58,14 +59,15 @@ function handleAddNewSubtask(){
             {newSubtask.map((subtaskNumber, index) => <SubtaskInput key={subtaskNumber} index={index} subtasks={newSubtask} setNewSubtasks={setNewSubtask}/>)}
         </div>
         <button class="new-sub-task" onClick={handleAddNewSubtask}>+ Add New Subtask</button>
-        <div className='input-wrapper'>
+        {/* <div className='input-wrapper'>
             <label htmlFor="">Status</label>
             <select name="status" id="status-field" value={taskStatus} onChange={(event) => setTaskStatus(event.target.value)} 
             onFocus={() => setDropDownOpen(true)} onBlur={() => setDropDownOpen(false)}>
                 {context.boards[context.activeBoard]
                 .columns.map((column, index) => <option key={index} className='option'>{column.name}</option>)}
-            </select>
-        </div>
+            </select> 
+        </div>*/}
+        <SelectMenu context={context} columns={context.boards[context.activeBoard].columns} setDropDownOpen={setDropDownOpen} setTaskStatus={setTaskStatus}/>
         <button className='create-task' onClick={handleCreateTask}>Create Task</button>
     </ModalWrapper>
   )
